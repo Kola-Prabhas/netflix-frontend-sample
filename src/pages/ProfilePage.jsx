@@ -1,5 +1,5 @@
 import Profile from "../components/Profile";
-import Subscriptions from "../components/subscriptions";
+import Subscriptions from "../components/Subscriptions";
 import Navbar from "../components/Navbar";
 
 export default function ProfilePage() {

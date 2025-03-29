@@ -42,7 +42,7 @@ const WatchPage = () => {
 					withCredentials: true,
 				});
 				setSimilarContent(res.data.content.results);
-				console.log(res.data);
+				// console.log(res.data);
 			} catch (error) {
 				setSimilarContent([]);
 			}

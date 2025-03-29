@@ -11,6 +11,9 @@ import WatchPage from './pages/WatchPage';
 import SearchHistoryPage from './pages/SearchHistoryPage';
 import NotFoundPage from './pages/404';
 import Footer from './components/Footer';
+import ProfilePage from './pages/ProfilePage';
+import StripeCheckoutPage from './pages/StripeCheckout';
+import PaymentSuccessPage from './pages/paymentSuccessPage';
 
 function App() {
 	const { user, isCheckingAuth, authCheck } = useAuthStore();
@@ -52,6 +55,18 @@ function App() {
 				<Route
 					path="/history"
 					element={user ? <SearchHistoryPage /> : <Navigate to="/login" />}
+				/>
+				<Route
+					path="/profile"
+					element={user ? <ProfilePage /> : <Navigate to="/login" />}
+				/>
+				<Route
+					path="/stripe-checkout"
+					element={user ? <StripeCheckoutPage /> : <Navigate to="/login" />}
+				/>
+				<Route
+					path="/payment-success/:id"
+					element={<PaymentSuccessPage />}
 				/>
 				<Route path="/*" element={<NotFoundPage />} />
 			</Routes>

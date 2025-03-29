@@ -24,7 +24,7 @@ const MovieSlider = ({ category }) => {
 				withCredentials: true,
 			});
 			setContent(res.data.content);
-			console.log(res.data.content);
+			// console.log(res.data.content);
 		};
 		getContent();
 	}, [contentType, category]);

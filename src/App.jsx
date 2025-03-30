@@ -66,7 +66,7 @@ function App() {
 				/>
 				<Route
 					path="/payment-success/:id"
-					element={<PaymentSuccessPage />}
+					element={user ? <PaymentSuccessPage /> : <Navigate to="/login" />}
 				/>
 				<Route path="/*" element={<NotFoundPage />} />
 			</Routes>

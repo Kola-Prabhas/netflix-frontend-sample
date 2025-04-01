@@ -21,7 +21,7 @@ export default function StripeCheckout() {
 
 	const location = useLocation();
 	const totalAmount = location.state.totalPrice;
-	const subscriptionId = location.state.subscriptionId;
+	const userId = location.state.userId;
 
 	useEffect(() => {
 		setClientSecretLoading(true);
@@ -31,7 +31,7 @@ export default function StripeCheckout() {
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ totalAmount: totalAmount }),
 			meta: {
-				order_id: subscriptionId, // this is the order id we are creating in the backend
+				order_id: userId, // this is the order id we are creating in the backend
 				// this info will go to stripe and then to our server via webhook
 				// useful for determining which order is successful even if client closes the browser
 			}
@@ -65,7 +65,7 @@ export default function StripeCheckout() {
 				{clientSecret && !clientSecretLoading && (
 					<Elements options={options} stripe={stripePromise}>
 						<CheckoutForm
-							subscriptionId={subscriptionId}
+							userId={userId}
 							totalAmount={totalAmount}
 						/>
 					</Elements>

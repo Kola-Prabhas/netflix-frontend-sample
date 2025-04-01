@@ -9,6 +9,7 @@ function classNames(...classes) {
 
 export default function PaymentSuccess() {
 	const params = useParams();
+	
 
 	return (
 		<>

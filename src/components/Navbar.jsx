@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { Search, Menu } from 'lucide-react';
 import { useAuthStore } from '../store/authUser';
 import { useContentStore } from '../store/content';
+import { LockKeyhole } from 'lucide-react';
+import { isActive } from '../utils/activeSubscription';
+import { toast } from 'react-hot-toast';
 
 
 const Navbar = () => {
@@ -16,7 +19,10 @@ const Navbar = () => {
 
 	function toggleDropDown() {
 		setShowDropDown(!showDropDown);
-	}
+	} 
+
+	const subscription = user.subscription;
+	const active = isActive(subscription);
 
 
 	return (
@@ -41,10 +47,25 @@ const Navbar = () => {
 						</Link>
 						<Link
 							to="/"
-							className="hover:text-white/60 transition-colors duration-500"
-							onClick={() => setContentType('tv')}
+							className="flex items-center gap-1 hover:text-white/60 transition-colors duration-500"
+							onClick={() => {
+								if (!active) {
+									toast.error('Please subscribe to access this feature');
+
+									return;
+								}
+
+								if (subscription.type == 'basic') {
+									toast.error('This feature is not available in your current subscription!');
+
+									return;
+								}
+
+								setContentType('tv')
+							}}
 						>
-							Tv Shows
+							<p>Tv Shows </p>
+							{(!active || subscription.type == 'basic') && <LockKeyhole className='size-4 text-orange-500' />}
 						</Link>
 						<Link
 							to="/history"

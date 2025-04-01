@@ -12,19 +12,19 @@ export const useSubscriptionStore = create((set) => ({
 		try {
 			const response = await axios.post(`${baseUrl}/api/v1/subscription`, subscription, { withCredentials: true });
 
-			console.log('response ', response);
-
-			set({ currentSubscription: response.data.subscription, isCurrentlyPaying: true });
+			set({ currentSubscription: response.data.data.user.subscription, isCurrentlyPaying: true });
 		} catch (error) {
+			console.log('subscripiton error ', error);
+
 			toast.error(error?.response?.data?.message || 'Failed to create Subscription');
 			set({ isCurrentlyPaying: false, currentSubscription: null });
 		}
 	},
 
-	markSubscriptionAsPaid: async (subscriptionId) => {
+	markSubscriptionAsPaid: async (userId) => {
 		try {
-			await axios.patch(`${baseUrl}/api/v1/subscription/${subscriptionId}`, { withCredentials: true });
-			set({ currentSubscription: false, isCurrentlyPaying: false });
+			await axios.patch(`${baseUrl}/api/v1/subscription/${userId}`, { withCredentials: true });
+			set({ currentSubscription: null, isCurrentlyPaying: false });
 			toast.success('Subscription paid successfully');
 		} catch (error) {
 			toast.error(error?.response?.data?.message || 'Failed to pay for the subscription');

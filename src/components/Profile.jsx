@@ -1,8 +1,4 @@
-import { useAuthStore } from '../store/authUser';
-
-
-export default function Profile() {
-	const user = useAuthStore((state) => state.user);
+export default function Profile({user}) {
 	
 	return (
 		<div>

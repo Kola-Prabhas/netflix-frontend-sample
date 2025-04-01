@@ -3,103 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import { CheckIcon, StarIcon } from 'lucide-react';
 import { useSubscriptionStore } from '../store/subscription';
 import { useAuthStore } from '../store/authUser';
+import {tiers, longTiers} from '../utils/constants';
 
 
-const tiers = [
-	{
-		name: 'Basic Stream',
-		id: 'basic',
-		priceMonthly: '49',
-		priceUnit: '$',
-		description: "The perfect plan for single user.",
-		features: [
-			'1 device',
-			'Playable Trailers',
-		],
-		featured: false,
-	},
-	{
-		name: 'CineMax',
-		id: 'cinemax',
-		priceMonthly: '99',
-		priceUnit: '$',
-		description: 'Affordable plan for the family with multiple devices support.',
-		features: [
-			'2 devices',
-			'Playable Trailers',
-			'Access to Tv Shows',
-		],
-		featured: true,
-	},
-	{
-		name: 'UltraFlix',
-		id: 'ultraflix',
-		priceMonthly: '149',
-		priceUnit: '$',
-		description: "Our premium plan for families that gives most of our platform features.",
-		features: [
-			'4 devices',
-			'Playable Trailers',
-			'Access to Tv Shows',
-			'Chatbot support'
-		],
-		featured: false,
-	},
-]
 
-const longTiers = [
-	{
-		name: 'Basic Stream',
-		id: 'basic',
-		priceYearly: '580',
-		priceUnit: '$',
-		description: "The perfect plan for single user.",
-		features: [
-			'1 device',
-			'Playable Trailers',
-		],
-		featured: false,
-	},
-	{
-		name: 'CineMax',
-		id: 'cinemax',
-		priceYearly: '1100',
-		priceUnit: '$',
-		description: 'Affordable plan for the family with multiple devices support.',
-		features: [
-			'2 devices',
-			'Playable Trailers',
-			'Access to Tv Shows',
-		],
-		featured: true,
-	},
-	{
-		name: 'UltraFlix',
-		id: 'ultraflix',
-		priceYearly: '1700',
-		priceUnit: '$',
-		description: "Our premium plan for families that gives most of our platform features.",
-		features: [
-			'4 devices',
-			'Playable Trailers',
-			'Access to Tv Shows',
-			'Chatbot support'
-		],
-		featured: false,
-	},
-]
 
 function classNames(...classes) {
 	return classes.filter(Boolean).join(' ')
 }
 
 
-export default function Subscriptions() {
+export default function Subscriptions({user}) {
 	const createSubscription = useSubscriptionStore((state) => state.createSubscription);
 	const currentSubscription = useSubscriptionStore((state) => state.currentSubscription);
-	const user = useAuthStore((state) => state.user);
-
-	console.log('current subsc ', currentSubscription);
 
 	const navigate = useNavigate();
 
@@ -107,12 +23,12 @@ export default function Subscriptions() {
 		if (currentSubscription) {
 			navigate('/stripe-checkout', {
 				state: {
-					subscriptionId: currentSubscription._id,
+					userId: user._id,
 					totalPrice: currentSubscription.price,
 				}
 			})
 		}
-	}, [currentSubscription, navigate])
+	}, [currentSubscription, navigate, user._id])
 	
 
 	return (

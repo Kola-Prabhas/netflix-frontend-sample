@@ -9,6 +9,9 @@ import { formatReleaseDate } from '../utils/dateFunction';
 import { ORIGINAL_IMG_BASE_URL, SMALL_IMG_BASE_URL } from '../utils/constants';
 import WatchPageSkeleton from '../components/skeletons/WatchPageSkeleton';
 import { baseUrl } from '../envVars';
+import { LockKeyhole } from 'lucide-react';
+import { useAuthStore } from '../store/authUser';
+import { isActive } from '../utils/activeSubscription';
 
 const WatchPage = () => {
 	const { id } = useParams();
@@ -18,8 +21,12 @@ const WatchPage = () => {
 	const [content, setContent] = useState({});
 	const [similarContent, setSimilarContent] = useState([]);
 	const { contentType } = useContentStore();
+	const { user } = useAuthStore();
+	const subscription = user.subscription;
+	const active = isActive(subscription);
 
 	const sliderRef = useRef(null);
+
 	useEffect(() => {
 		const getTrailers = async () => {
 			try {
@@ -35,6 +42,7 @@ const WatchPage = () => {
 		};
 		getTrailers();
 	}, [contentType, id]);
+
 	useEffect(() => {
 		const getSimilarContent = async () => {
 			try {
@@ -49,6 +57,7 @@ const WatchPage = () => {
 		};
 		getSimilarContent();
 	}, [contentType, id]);
+
 	useEffect(() => {
 		const getContentDetails = async () => {
 			try {
@@ -66,10 +75,12 @@ const WatchPage = () => {
 		};
 		getContentDetails();
 	}, [contentType, id]);
+
 	const handleNext = () => {
 		if (currentTrailerId < trailers.length - 1)
 			setCurrentTrailerId(currentTrailerId + 1);
 	};
+
 	const handlePrev = () => {
 		if (currentTrailerId > 0) setCurrentTrailerId(currentTrailerId - 1);
 	};
@@ -81,6 +92,7 @@ const WatchPage = () => {
 				behavior: 'smooth',
 			});
 	};
+
 	const scrollRight = () => {
 		if (sliderRef.current)
 			sliderRef.current.scrollBy({
@@ -89,12 +101,14 @@ const WatchPage = () => {
 			});
 	};
 
-	if (loading)
+	if (loading) {
 		return (
 			<div className="min-h-screen bg-black p-10">
 				<WatchPageSkeleton />
 			</div>
 		);
+	}
+
 	if (!content) {
 		return (
 			<div className="bg-black text-white h-screen">
@@ -109,6 +123,8 @@ const WatchPage = () => {
 			</div>
 		);
 	}
+
+
 	return (
 		<div className="bg-black min-h-screen text-white">
 			<div className="mx-auto container px-4 gap-y-8 h-full">
@@ -125,8 +141,8 @@ const WatchPage = () => {
 						</button>
 						<button
 							className={`bg-gray-500/70 hover:bg-gray-500 text-white py-2 px-4 rounded ${currentTrailerId === trailers?.length - 1
-									? 'opacity-50 cursor-not-allowed'
-									: ''
+								? 'opacity-50 cursor-not-allowed'
+								: ''
 								} `}
 							disabled={currentTrailerId === trailers?.length - 1}
 							onClick={handleNext}
@@ -135,18 +151,24 @@ const WatchPage = () => {
 						</button>
 					</div>
 				)}
-				<div className="aspect-video mb-8 p-1 h-[60vh] w-full sm:px-10 md:px-32">
+				<div className="relative aspect-video mb-8 p-1 h-[60vh] w-full sm:px-10 md:px-32">
 					{trailers?.length > 0 && (
-						<ReactPlayer
-							muted={true}
-							playing={true}
-							loop={true}
-							controls={true}
-							width={'100%'}
-							height={'60vh'}
-							className="mx-atuo overflow-hidden rounded-lg"
-							url={`https://www.youtube.com/watch?v=${trailers[currentTrailerId].key}`}
-						/>
+						<>
+							{!active && <div className="flex items-center justify-center gap-2 absolute inset-0 bg-black/50 rounded-lg">
+								<LockKeyhole className='size-6 text-orange-500' />
+								<p className='text-gray-200 font-bold text-2xl font-serif'>Subscription Needed!</p>
+							</div>}
+							<ReactPlayer
+								muted={true}
+								playing={active}
+								loop={true}
+								controls={true}
+								width={'100%'}
+								height={'60vh'}
+								className="mx-atuo overflow-hidden rounded-lg"
+								url={`https://www.youtube.com/watch?v=${trailers[currentTrailerId].key}`}
+							/>
+						</>
 					)}
 					{trailers?.length === 0 && (
 						<h2 className="text-xl text-center mt-5">

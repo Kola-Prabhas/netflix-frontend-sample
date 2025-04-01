@@ -4,9 +4,11 @@ import {
 	useStripe,
 	useElements
 } from "@stripe/react-stripe-js";
+import { useSubscriptionStore } from "../store/subscription";
+import { useAuthStore } from '../store/authUser';
 
 
-export default function CheckoutForm({ subscriptionId, totalAmount }) {
+export default function CheckoutForm({ userId, totalAmount }) {
 	const stripe = useStripe();
 	const elements = useElements();
 
@@ -14,6 +16,9 @@ export default function CheckoutForm({ subscriptionId, totalAmount }) {
 
 	const [message, setMessage] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
+
+	const markSubscriptionAsPaid = useSubscriptionStore((state) => state.markSubscriptionAsPaid);
+	const getUser = useAuthStore(state => state.getUser);
 
 
 
@@ -62,14 +67,16 @@ export default function CheckoutForm({ subscriptionId, totalAmount }) {
 
 		setIsLoading(true);
 
-		// dispatch(updateOrderAsync({ id: orderId, paymentStatus: "paid" }));
+		markSubscriptionAsPaid(userId);
+		getUser(userId);
+
 
 		const { error } = await stripe.confirmPayment({
 			elements,
 			confirmParams: {
 				// Make sure to change this to your payment completion page
 				// return_url: baseUrl + `/${orderId}`,
-				return_url: `${baseUrl}/payment-success/${subscriptionId}`,
+				return_url: `${baseUrl}/#/?id=${userId}`,
 			},
 		});
 

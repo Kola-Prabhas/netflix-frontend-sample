@@ -54,7 +54,7 @@ export default function CurrentSubscription({ subscription }) {
 							${subscription.price}
 						</span>
 					</p>
-					<p className={classNames(tier.featured ? 'text-gray-300' : 'text-gray-800', 'mt-6 text-base/7')}>
+					<p className={classNames('text-gray-800', 'mt-6 text-base/7')}>
 						{tier.description}
 					</p>
 					<ul

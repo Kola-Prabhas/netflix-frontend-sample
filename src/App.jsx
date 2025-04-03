@@ -14,6 +14,7 @@ import Footer from './components/Footer';
 import ProfilePage from './pages/ProfilePage';
 import StripeCheckoutPage from './pages/StripeCheckout';
 import PaymentSuccessPage from './pages/paymentSuccessPage';
+import ChatPage from './pages/ChatPage';
 
 function App() {
 	const { user, isCheckingAuth, authCheck } = useAuthStore();
@@ -67,6 +68,10 @@ function App() {
 				<Route
 					path="/payment-success/:id"
 					element={user ? <PaymentSuccessPage /> : <Navigate to="/login" />}
+				/>
+				<Route
+					path="/chat"
+					element={<ChatPage />}
 				/>
 				<Route path="/*" element={<NotFoundPage />} />
 			</Routes>

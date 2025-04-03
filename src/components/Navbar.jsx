@@ -14,14 +14,22 @@ const Navbar = () => {
 	const [showDropDown, setShowDropDown] = useState(false);
 	const toggleMobileMenu = () => {
 		setIsMobileMenuOpen(!isMobileMenuOpen);
+
+		if (!isMobileMenuOpen && showDropDown) {
+			setShowDropDown(false);
+		}
 	};
 	const { setContentType } = useContentStore();
 
 	function toggleDropDown() {
 		setShowDropDown(!showDropDown);
+
+		if (isMobileMenuOpen && !showDropDown) {
+			setIsMobileMenuOpen(false);
+		}
 	} 
 
-	const subscription = user.subscription;
+	const subscription = user?.subscription;
 	const active = isActive(subscription);
 
 
@@ -85,7 +93,7 @@ const Navbar = () => {
 						className="h-8 rounded cursor-pointer"
 						onClick={toggleDropDown}
 					/>
-					{showDropDown && <DropDown onLogoutClick={logout} />}
+					{showDropDown && <DropDown user={user}  onLogoutClick={logout} />}
 					<div className="sm:hidden">
 						<Menu
 							className="size-6 cursor-pointer"
@@ -94,7 +102,7 @@ const Navbar = () => {
 					</div>
 				</div>
 				{isMobileMenuOpen && (
-					<div className="w-full sm:hidden mt-4 z-50 bg-black border rounded border-gray-800">
+					<div className="w-full px-4 py-2 sm:hidden z-50 bg-black border rounded border-gray-800">
 						<Link className="block hover:text-white/60 transition-colors duration-500">
 							Movies
 						</Link>
@@ -112,14 +120,25 @@ const Navbar = () => {
 };
 
 
-function DropDown({ onLogoutClick }) {
+function DropDown({ user, onLogoutClick }) {
+
+	const subscription = user?.subscription;
+	const active = isActive(subscription);
+
 	return (
-		<div className='w-[100px] absolute right-[-35px] bottom-[-75px] *:hover:bg-white/20 *:w-full text-center font-medium rounded-lg *:rounded-md flex flex-col gap-2 p-2 *:px-2 *:py-0.5 bg-black text-white'>
+		<div className='w-[100px] absolute right-[-35px] bottom-[-110px] *:hover:bg-white/20 *:w-full text-center font-medium rounded-lg *:rounded-md flex flex-col gap-2 p-2 *:px-2 *:py-0.5 bg-black text-white'>
 			<Link
 				to="/profile"
 				className="text-sm hover:text-white/80"
 			>
 				Profile
+			</Link>
+			<Link
+				to={active && subscription.type === 'ultraflix' ? '/chat' : '/'}
+				// to='/chat'
+				className="flex items-center justify-center gap-1 text-sm hover:text-white/80"
+			>
+				{(!active || subscription.type != 'ultraflix') && <LockKeyhole className='size-4 text-orange-500' />} Chat
 			</Link>
 			<button
 				className="cursor-pointer text-sm text-red-500 hover:text-red-300"

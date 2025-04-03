@@ -12,7 +12,6 @@ export const tiers = [
 		priceUnit: '$',
 		description: "The perfect plan for single user.",
 		features: [
-			'1 device',
 			'Playable Trailers',
 		],
 		featured: false,
@@ -24,7 +23,6 @@ export const tiers = [
 		priceUnit: '$',
 		description: 'Affordable plan for the family with multiple devices support.',
 		features: [
-			'2 devices',
 			'Playable Trailers',
 			'Access to Tv Shows',
 		],
@@ -37,7 +35,6 @@ export const tiers = [
 		priceUnit: '$',
 		description: "Our premium plan for families that gives most of our platform features.",
 		features: [
-			'4 devices',
 			'Playable Trailers',
 			'Access to Tv Shows',
 			'Chatbot support'
@@ -54,7 +51,6 @@ export const longTiers = [
 		priceUnit: '$',
 		description: "The perfect plan for single user.",
 		features: [
-			'1 device',
 			'Playable Trailers',
 		],
 		featured: false,
@@ -66,7 +62,6 @@ export const longTiers = [
 		priceUnit: '$',
 		description: 'Affordable plan for the family with multiple devices support.',
 		features: [
-			'2 devices',
 			'Playable Trailers',
 			'Access to Tv Shows',
 		],
@@ -79,7 +74,6 @@ export const longTiers = [
 		priceUnit: '$',
 		description: "Our premium plan for families that gives most of our platform features.",
 		features: [
-			'4 devices',
 			'Playable Trailers',
 			'Access to Tv Shows',
 			'Chatbot support'

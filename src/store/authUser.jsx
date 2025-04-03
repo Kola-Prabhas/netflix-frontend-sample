@@ -51,12 +51,13 @@ export const useAuthStore = create((set) => ({
 			set({ user: response.data.user, isCheckingAuth: false });
 		} catch (error) {
 			set({ isCheckingAuth: false, user: null });
-			toast.error(error?.response?.data?.message || "An error occurred");
+			console.log('Auth check error ', error);
+			// toast.error(error?.response?.data?.message || "An error occurred");
 		}
 	},
 	getUser: async (id) => {
 		try {
-			const response = await axios.get(`${baseUrl}/api/v1/auth/user/${id}`, {
+			const response = await axios.get(`${baseUrl}/api/v1/auth/users/${id}`, {
 				withCredentials: true,
 			});
 			set({ user: response.data.user, isCheckingAuth: false });

@@ -13,7 +13,7 @@ export default function PaymentSuccess() {
 
 	return (
 		<>
-			{!params.id && <Navigate to="/" replace={true}></Navigate>}
+			{/* {!params.id && <Navigate to="/" replace={true}></Navigate>} */}
 
 			<main className="grid min-h-full place-items-center bg-white px-6 pt-10 pb-24 sm:pt-16 sm:pb-32 lg:px-8">
 				<h1 className="font-serif mt-4 sm:text-3xl font-bold tracking-tight text-indigo-900 mb-20">Subscription Added Successfully</h1>

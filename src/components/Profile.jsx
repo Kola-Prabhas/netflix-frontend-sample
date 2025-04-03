@@ -1,4 +1,7 @@
-export default function Profile({user}) {
+import {isActive} from '../utils/activeSubscription'
+
+export default function Profile({ user }) {
+	const active = isActive(user?.subscription);
 	
 	return (
 		<div>
@@ -10,7 +13,7 @@ export default function Profile({user}) {
 				<div className='text-3xl space-y-4 font-medium text-gray-300 '>
 					<p><span className='text-gray-600'>Name:</span> <span className='font-serif'>{user.username}</span></p>
 					<p><span className='text-gray-600'>Email:</span> <span className='font-serif'>{user.email}</span></p>
-					<p><span className='text-gray-600'>Subscription:</span> <span className='font-serif'>{user.subscription ? 'Subscribed' : 'Not Subscribed'}</span></p>
+					<p><span className='text-gray-600'>Subscription:</span> <span className='font-serif'>{active  ? 'Subscribed' : 'Not Subscribed'}</span></p>
 				</div>
 			</div>
 		</div>

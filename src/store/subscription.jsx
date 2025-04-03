@@ -23,7 +23,7 @@ export const useSubscriptionStore = create((set) => ({
 
 	markSubscriptionAsPaid: async (userId) => {
 		try {
-			await axios.patch(`${baseUrl}/api/v1/subscription/${userId}`, { withCredentials: true });
+			await axios.patch(`${baseUrl}/api/v1/subscription/${userId}`, {}, { withCredentials: true });
 			set({ currentSubscription: null, isCurrentlyPaying: false });
 			toast.success('Subscription paid successfully');
 		} catch (error) {

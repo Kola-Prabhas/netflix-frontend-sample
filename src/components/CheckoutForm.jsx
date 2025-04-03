@@ -6,11 +6,14 @@ import {
 } from "@stripe/react-stripe-js";
 import { useSubscriptionStore } from "../store/subscription";
 import { useAuthStore } from '../store/authUser';
+import { useNavigate } from "react-router-dom";
+import { toast } from 'react-hot-toast';
 
 
 export default function CheckoutForm({ userId, totalAmount }) {
 	const stripe = useStripe();
 	const elements = useElements();
+	const navigate = useNavigate();
 
 	const baseUrl = window.location.origin;
 
@@ -68,17 +71,27 @@ export default function CheckoutForm({ userId, totalAmount }) {
 		setIsLoading(true);
 
 		markSubscriptionAsPaid(userId);
-		getUser(userId);
-
+		// getUser(userId);
 
 		const { error } = await stripe.confirmPayment({
 			elements,
 			confirmParams: {
 				// Make sure to change this to your payment completion page
 				// return_url: baseUrl + `/${orderId}`,
-				return_url: `${baseUrl}/#/?id=${userId}`,
+				return_url: `${baseUrl}/login`,
 			},
+			// redirect: "if_required"
 		});
+
+		// if (error) {
+		// 	toast.error("Payment failed:", error.message);
+		// } else {
+		// 	setTimeout(() => {
+		// 		markSubscriptionAsPaid(userId);
+		// 		getUser(userId);
+		// 		navigate(`/payment-success/${userId}`);
+		// 	}, 1000);
+		// }
 
 		// dispatch(updateOrderAsync({ id: orderId, paymentStatus: "unpaid" }));
 
@@ -88,7 +101,7 @@ export default function CheckoutForm({ userId, totalAmount }) {
 		// be redirected to an intermediate site first to authorize the payment, then
 		// redirected to the `return_url`.
 
-		if (error.type === "card_error" || error.type === "validation_error") {
+		if (error?.type === "card_error" || error?.type === "validation_error") {
 			setMessage(error.message);
 		} else {
 			console.log('error ', error);
